@@ -106,11 +106,11 @@ totalPage= int(totalPageText[1:-1])
 print(totalPage)
 
 i=0
-while (i<12):
+while (i<24):
     checkFault(totalPage)
     print("===========================================%d===="%i,end=" ")
     print (time.strftime(" %H:%M", time.localtime()))
     i=i+1
-    time.sleep(3)
+    time.sleep(300)
 
 driver.quit()
