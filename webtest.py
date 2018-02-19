@@ -78,7 +78,7 @@ def checkFault(totalPage):
         time.sleep(2)
         fun=checkPage(driver)
         while fun != 1:
-            fun=checkPage()
+            fun=checkPage(driver)
 
         page = page + 1
 
@@ -111,6 +111,6 @@ while (i<12):
     print("===========================================%d===="%i,end=" ")
     print (time.strftime(" %H:%M", time.localtime()))
     i=i+1
-    time.sleep(300)
+    time.sleep(3)
 
 driver.quit()
