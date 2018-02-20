@@ -9,11 +9,8 @@ import time
 
 def loginWeb():
     driver = webdriver.Chrome()
-
     driver.get("http://47.96.3.9:8080/subwayweb/")
-
     print(driver.title)
-
     userID = WebDriverWait(driver, 10, 0.5).until(
                           EC.presence_of_element_located((By.CSS_SELECTOR, "#userId"))
                           )
@@ -30,15 +27,13 @@ def loginWeb():
 
     driver.implicitly_wait(10)
     driver.get("http://47.96.3.9:8080/subwayweb/jsp/paramManage/agmParmManage.jsp")
-
     print(driver.title)
-
     driver.maximize_window()
 
-    time.sleep(1)
     return driver
 
 def checkPage(driver):
+    # 检查一个页面内的故障
     try:
         pDeviceState = driver.find_elements_by_xpath('//td[@field="speechV"]/div')
         pDevicesID = driver.find_elements_by_xpath('//td[@field="deviceNo"]/div')
@@ -51,8 +46,8 @@ def checkPage(driver):
                 DevicesID = pDevicesID[i]
                 StationName = pStationName[i]
                 DeviceName = pDeviceName[i]
-                print('---------------------------------------------------> '
-                      +DevicesID.text + ' ' + StationName.text + ' ' + DeviceName.text + ' ' + index.text )
+                print('                                          ---------> '
+                      +DevicesID.text + ' ' + StationName.text + ' ' + DeviceName.text + '    ' + index.text )
             elif text1.find('异常') > 0:
                 DevicesID = pDevicesID[i]
                 StationName = pStationName[i]
@@ -82,7 +77,11 @@ def checkFault(totalPage):
 
         page = page + 1
 
+
 driver =loginWeb()
+
+# 选择参数
+## 选择AGM
 selectClick = driver.find_element_by_css_selector("#formA > table > tbody > tr > td:nth-child(8) > span > span")
 ActionChains(driver).move_to_element(selectClick).perform()
 time.sleep(1)
@@ -92,9 +91,11 @@ selectClick = driver.find_element_by_css_selector("body > div.panel.combo-p > di
 selectClick.click()
 time.sleep(1)
 
+# 点击查询
 submit=driver.find_element_by_css_selector("#formA > table > tbody > tr > td:nth-child(9) > a")
 submit.click()
 
+# 选择每页显示30条
 driver.implicitly_wait(10)
 selectNumber = driver.find_element_by_css_selector("body > div.panel.layout-panel.layout-panel-center > div > div > div > div.datagrid-pager.pagination > table > tbody > tr > td:nth-child(1) > select")
 Select(selectNumber).select_by_index(2)
@@ -103,13 +104,13 @@ time.sleep(1)
 totalPageText =  driver.find_element_by_css_selector("body > div.panel.layout-panel.layout-panel-center > div > div > div > div.datagrid-pager.pagination > table > tbody > tr > td:nth-child(8) > span").text
 print(totalPageText)
 totalPage= int(totalPageText[1:-1])
-print(totalPage)
 
 i=0
 while (i<24):
     checkFault(totalPage)
-    print("===========================================%d===="%i,end=" ")
-    print (time.strftime(" %H:%M", time.localtime()))
+    print("===========================================%d===="%i, end=" ")
+    print(time.strftime(" %H:%M", time.localtime()))
+    print()
     i=i+1
     time.sleep(300)
 
