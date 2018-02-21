@@ -112,6 +112,8 @@ while (i<24):
     print(time.strftime(" %H:%M", time.localtime()))
     print()
     i=i+1
-    time.sleep(300)
+    #最后一次检查完不等待
+    if i < 24:
+        time.sleep(300)
 
 driver.quit()
