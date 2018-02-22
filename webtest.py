@@ -41,18 +41,19 @@ def checkPage(driver):
         pDeviceName = driver.find_elements_by_xpath('//td[@field="deviceName"]/div')
         i = 0
         for index in pDeviceState:
-            text1 = index.text
-            if (text1.find('PCM') > 0 or text1.find('停止') > 0):
-                DevicesID = pDevicesID[i]
-                StationName = pStationName[i]
-                DeviceName = pDeviceName[i]
+            DeviceState = index.text
+            if (DeviceState.find('PCM') > 0 or DeviceState.find('停止') > 0):
+                DevicesID = pDevicesID[i].text
+                StationName = pStationName[i].text
+                DeviceName = pDeviceName[i].text
+                DeviceName = DeviceName.replace(' ', '')
                 print('                                          ---------> '
-                      +DevicesID.text + ' ' + StationName.text + ' ' + DeviceName.text + '    ' + index.text )
-            elif text1.find('异常') > 0:
-                DevicesID = pDevicesID[i]
-                StationName = pStationName[i]
-                DeviceName = pDeviceName[i]
-                print(DevicesID.text + ' ' + StationName.text + ' ' + DeviceName.text + ' ' + index.text)
+                      +DevicesID + ' ' + StationName + ' ' + DeviceName + '    ' + DeviceState )
+            elif DeviceState.find('异常') > 0:
+                DevicesID = pDevicesID[i].text
+                StationName = pStationName[i].text
+                DeviceName = pDeviceName[i].text
+                print(DevicesID + ' ' + StationName + ' ' + DeviceName + ' ' + DeviceState)
             else:
                 t = 0
             i = i + 1
@@ -77,11 +78,11 @@ def checkFault(totalPage):
 
         page = page + 1
 
-
+# 登陆查询页面
 driver =loginWeb()
 
 # 选择参数
-## 选择AGM
+# 选择AGM
 selectClick = driver.find_element_by_css_selector("#formA > table > tbody > tr > td:nth-child(8) > span > span")
 ActionChains(driver).move_to_element(selectClick).perform()
 time.sleep(1)
@@ -105,6 +106,7 @@ totalPageText =  driver.find_element_by_css_selector("body > div.panel.layout-pa
 print(totalPageText)
 totalPage= int(totalPageText[1:-1])
 
+# 循环进行24次检查，每次间隔5分钟
 i=0
 while (i<24):
     checkFault(totalPage)
