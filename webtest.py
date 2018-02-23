@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.keys import Keys
+import winsound
 import time
 
 def loginWeb():
@@ -17,13 +18,13 @@ def loginWeb():
     userPass =WebDriverWait(driver, 10, 0.5).until(
                           EC.presence_of_element_located((By.CSS_SELECTOR, "#password"))
                           )
-    submit = WebDriverWait(driver, 10, 0.5).until(
+    pSubmit = WebDriverWait(driver, 10, 0.5).until(
                           EC.element_to_be_clickable((By.CSS_SELECTOR, "#box > div > table > tbody > tr:nth-child(3) > td:nth-child(2) > input"))
                           )
 
     userID.send_keys('ipuser')
     userPass.send_keys('qaz123')
-    submit.click()
+    pSubmit.click()
 
     driver.implicitly_wait(10)
     driver.get("http://47.96.3.9:8080/subwayweb/jsp/paramManage/agmParmManage.jsp")
@@ -49,6 +50,7 @@ def checkPage(driver):
                 DeviceName = DeviceName.replace(' ', '')
                 print('                                          ---------> '
                       +DevicesID + ' ' + StationName + ' ' + DeviceName + '    ' + DeviceState )
+                winsound.Beep(880, 300), winsound.Beep(807, 600)
             elif DeviceState.find('异常') > 0:
                 DevicesID = pDevicesID[i].text
                 StationName = pStationName[i].text
@@ -117,5 +119,5 @@ while (i<24):
     #最后一次检查完不等待
     if i < 24:
         time.sleep(300)
-
+    winsound.Beep(697, 200), winsound.Beep(697, 200), winsound.Beep(697, 200)
 driver.quit()
