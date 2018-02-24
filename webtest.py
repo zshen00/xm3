@@ -119,5 +119,5 @@ while (i<24):
     #最后一次检查完不等待
     if i < 24:
         time.sleep(300)
-    winsound.Beep(697, 200), winsound.Beep(697, 200), winsound.Beep(697, 200)
+winsound.Beep(697, 200), winsound.Beep(697, 200), winsound.Beep(697, 200)
 driver.quit()
