@@ -26,4 +26,12 @@ def loginWeb():
     print(driver.title)
     driver.maximize_window()
 
+    driver.execute_script("window.open('http://47.96.3.9:8080/subwayweb/jsp/paramManage/agmParmManage.jsp', 'new_window')")
+
     return driver
+
+def main():
+  loginWeb()
+
+if __name__ == '__main__':
+  main()
