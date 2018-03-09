@@ -4,7 +4,8 @@ from selenium.webdriver.common.keys import Keys
 from webinit import loginWeb
 import winsound
 import time
-
+from postWx import wxLogin
+from postWx import wxPutTxt
 
 def checkPage(driver):
     # 检查一个页面内的故障
@@ -21,6 +22,8 @@ def checkPage(driver):
                 StationName = pStationName[i].text
                 DeviceName = pDeviceName[i].text
                 DeviceName = DeviceName.replace(' ', '')
+                textPut = DevicesID + ' ' + StationName + ' ' + DeviceName + '    ' + DeviceState
+                wxPutTxt(textPut)
                 print('                                          ---------> '
                       +DevicesID + ' ' + StationName + ' ' + DeviceName + '    ' + DeviceState )
                 winsound.Beep(880, 300), winsound.Beep(807, 600)
@@ -53,6 +56,12 @@ def checkFault(totalPage):
 
         page = page + 1
 
+
+# 登录微信
+wxLogin()
+wxPutTxt("开始")
+
+
 # 登陆查询页面
 driver =loginWeb()
 
@@ -82,15 +91,18 @@ print(totalPageText)
 totalPage= int(totalPageText[1:-1])
 
 # 循环进行24次检查，每次间隔5分钟
-i=0
-while (i<24):
+i = 0
+n = 48
+while (i < n):
     checkFault(totalPage)
     print("===========================================%d===="%i, end=" ")
     print(time.strftime(" %H:%M", time.localtime()))
     print()
+    wxPutTxt(i)
     i=i+1
     #最后一次检查完不等待
-    if i < 24:
+    if i < n:
         time.sleep(300)
 winsound.Beep(697, 200), winsound.Beep(697, 200), winsound.Beep(697, 200)
 driver.quit()
+wxPutTxt('结束了')
