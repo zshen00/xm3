@@ -90,15 +90,15 @@ totalPageText =  driver.find_element_by_css_selector("body > div.panel.layout-pa
 print(totalPageText)
 totalPage= int(totalPageText[1:-1])
 
-# 循环进行24次检查，每次间隔5分钟
+# 循环进行n次检查，每次间隔5分钟
 i = 0
-n = 48
+n = 72
 while (i < n):
+    wxPutTxt(i)
     checkFault(totalPage)
     print("===========================================%d===="%i, end=" ")
     print(time.strftime(" %H:%M", time.localtime()))
     print()
-    wxPutTxt(i)
     i=i+1
     #最后一次检查完不等待
     if i < n:
